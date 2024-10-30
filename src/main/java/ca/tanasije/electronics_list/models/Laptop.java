@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class laptop {
+public class Laptop {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
