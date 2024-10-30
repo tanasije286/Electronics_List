@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,12 +23,29 @@ public class Laptop {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long laptopId;
-    private String laptopLabel;
-    private String laptopBrand;
-    private Long laptopSerialNumber;
-    private String laptopOwner;
-    private Location laptopLocation;
-    private PrimaryUse laptopPrimaryUse;
-    private OperatingSystem laptopOperatingSystem;
 
+    @NotBlank(message = "Label cannot be blank")
+    @Size(max = 10, message = "Label can have up to 10 characters")
+    private String laptopLabel;
+
+    @NotBlank(message = "Brand cannot be blank")
+    @Size(max = 50, message = "Brand can have up to 50 characters")
+    private String laptopBrand;
+
+    @NotBlank(message = "Serial Number cannot be blank")
+    @Size(max = 100, message = "Serial Number can have up to 100 characters")
+    private String laptopSerialNumber;
+
+    @NotBlank(message = "Laptop Owner cannot be blank")
+    @Size(max = 50, message = "Laptop Owner can have up to 50 characters")
+    private String laptopOwner;
+
+    @NotNull(message = "Location is required")
+    private Location laptopLocation;
+
+    @NotNull(message = "Primary use is required")
+    private PrimaryUse laptopPrimaryUse;
+
+    @NotNull(message = "Operating system is required")
+    private OperatingSystem laptopOperatingSystem;
 }
