@@ -1,8 +1,8 @@
-package ca.tanasije.electronics_list.models;
+package ca.tanasije.electronics_list.entity;
 
-import ca.tanasije.electronics_list.models.enums.Location;
-import ca.tanasije.electronics_list.models.enums.OperatingSystem;
-import ca.tanasije.electronics_list.models.enums.PrimaryUse;
+import ca.tanasije.electronics_list.entity.enums.Location;
+import ca.tanasije.electronics_list.entity.enums.OperatingSystem;
+import ca.tanasije.electronics_list.entity.enums.PrimaryUse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

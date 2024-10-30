@@ -1,4 +1,4 @@
-package ca.tanasije.electronics_list.models.enums;
+package ca.tanasije.electronics_list.entity.enums;
 
 public enum Location {
     ROOM_200,
