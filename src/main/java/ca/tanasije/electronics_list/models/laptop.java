@@ -1,5 +1,8 @@
 package ca.tanasije.electronics_list.models;
 
+import ca.tanasije.electronics_list.models.enums.Location;
+import ca.tanasije.electronics_list.models.enums.OperatingSystem;
+import ca.tanasije.electronics_list.models.enums.PrimaryUse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,8 +18,8 @@ public class laptop {
     private String brand;
     private Long serialNumber;
     private String owner;
-    private String location;
-    private String primaryUse;
-    private String operatingSystem;
+    private Location location;
+    private PrimaryUse primaryUse;
+    private OperatingSystem operatingSystem;
 
 }
