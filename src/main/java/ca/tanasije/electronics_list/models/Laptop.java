@@ -19,13 +19,13 @@ public class Laptop {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private Long laptopId;
     private String laptopLabel;
-    private String brand;
-    private Long serialNumber;
-    private String owner;
-    private Location location;
-    private PrimaryUse primaryUse;
-    private OperatingSystem operatingSystem;
+    private String laptopBrand;
+    private Long laptopSerialNumber;
+    private String laptopOwner;
+    private Location laptopLocation;
+    private PrimaryUse laptopPrimaryUse;
+    private OperatingSystem laptopOperatingSystem;
 
 }
