@@ -2,7 +2,9 @@ package ca.tanasije.electronics_list.service;
 
 import ca.tanasije.electronics_list.dto.LaptopDTO;
 import ca.tanasije.electronics_list.entity.Laptop;
+import ca.tanasije.electronics_list.exception.NoSuchLaptopExistsException;
 import ca.tanasije.electronics_list.repository.LaptopRepository;
+import ca.tanasije.electronics_list.utility.error_message.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +49,7 @@ public class LaptopServiceImpl implements LaptopService{
 
     @Override
     public LaptopDTO getLaptopById(Long id) {
-        Laptop laptop = laptopRepository.findById(id).orElseThrow(() -> new RuntimeException("Laptop not found"));
+        Laptop laptop = laptopRepository.findById(id).orElseThrow(() -> new NoSuchLaptopExistsException(ErrorMessage.ERROR_LAPTOP_NOT_FOUND + id));
         return mapLaptopToDTO(laptop);
     }
 
