@@ -1,4 +1,4 @@
-package ca.tanasije.electronics_list.exception.error_response;
+package ca.tanasije.electronics_list.error_response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
