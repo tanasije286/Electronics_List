@@ -1,42 +1,47 @@
 package ca.tanasije.electronics_list.controller;
 
-import ca.tanasije.electronics_list.entity.Laptop;
+import ca.tanasije.electronics_list.dto.LaptopDTO;
 import ca.tanasije.electronics_list.service.LaptopService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/laptops")
 public class LaptopController {
 
     @Autowired
     private LaptopService laptopService;
 
-    @PostMapping("/laptops")
-    public Laptop saveLaptop(@Valid @RequestBody Laptop laptop) {
-        return laptopService.saveLaptop(laptop);
+    @GetMapping("/")
+    public ResponseEntity<List<LaptopDTO>> getAllLaptops() {
+        List<LaptopDTO> laptops = laptopService.getAllLaptops();
+        return ResponseEntity.ok(laptops);
     }
 
-    @GetMapping("/laptops")
-    public List<Laptop> fetchLaptopList() {
-        return laptopService.fetchLaptopList();
+    @GetMapping("/{id}")
+    public ResponseEntity<LaptopDTO> getLaptopById(@PathVariable Long id) {
+        LaptopDTO laptop = laptopService.getLaptopById(id);
+        return ResponseEntity.ok(laptop);
     }
 
-    @GetMapping("/laptops/{id}")
-    public Laptop fetchLaptop(@PathVariable("id") Long laptopId) {
-        return laptopService.fetchLaptop(laptopId);
+    @PostMapping("/")
+    public ResponseEntity<LaptopDTO> createLaptop(@RequestBody LaptopDTO laptopDTO) {
+        LaptopDTO createdLaptop = laptopService.createLaptop(laptopDTO);
+        return ResponseEntity.ok(createdLaptop);
     }
 
-    @PutMapping("/laptops/{id}")
-    public Laptop updateLaptop(@RequestBody Laptop laptop, @PathVariable("id") Long laptopId) {
-        return laptopService.updateLaptop(laptop, laptopId);
+    @PutMapping("/{id}")
+    public ResponseEntity<LaptopDTO> updateLaptop(@PathVariable Long id, @RequestBody LaptopDTO laptopDTO) {
+        LaptopDTO updatedLaptop = laptopService.updateLaptop(id, laptopDTO);
+        return ResponseEntity.ok(updatedLaptop);
     }
 
-    @DeleteMapping("/laptops/{id}")
-    public String deleteLaptopById(@PathVariable("id") Long laptopId) {
-        laptopService.deleteLaptopById(laptopId);
-        return "Deleted Laptop Successfully";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLaptop(@PathVariable Long id) {
+        laptopService.deleteLaptop(id);
+        return ResponseEntity.noContent().build();
     }
 }
