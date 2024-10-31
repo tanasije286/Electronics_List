@@ -1,5 +1,6 @@
 package ca.tanasije.electronics_list.service;
 
+import ca.tanasije.electronics_list.dto.LaptopDTO;
 import ca.tanasije.electronics_list.entity.Laptop;
 import ca.tanasije.electronics_list.repository.LaptopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LaptopServiceImpl implements LaptopService{
@@ -14,54 +16,66 @@ public class LaptopServiceImpl implements LaptopService{
     @Autowired
     private LaptopRepository laptopRepository;
 
-    @Override
-    public Laptop saveLaptop(Laptop laptop) {
-        return laptopRepository.save(laptop);
+    private LaptopDTO mapLaptopToDTO(Laptop laptop) {
+        return new LaptopDTO(laptop.getLaptopId(),
+                laptop.getLaptopLabel(),
+                laptop.getLaptopBrand(),
+                laptop.getLaptopSerialNumber(),
+                laptop.getLaptopOwner(),
+                laptop.getLaptopLocation(),
+                laptop.getLaptopPrimaryUse(),
+                laptop.getLaptopOperatingSystem()
+        );
+    }
+
+    private Laptop mapDTOToLaptop(LaptopDTO laptopDTO) {
+        return new Laptop(laptopDTO.getLaptopLabel(),
+                laptopDTO.getLaptopBrand(),
+                laptopDTO.getLaptopSerialNumber(),
+                laptopDTO.getLaptopOwner(),
+                laptopDTO.getLaptopLocation(),
+                laptopDTO.getLaptopPrimaryUse(),
+                laptopDTO.getLaptopOperatingSystem()
+        );
     }
 
     @Override
-    public List<Laptop> fetchLaptopList() {
-        return laptopRepository.findAll();
+    public List<LaptopDTO> getAllLaptops() {
+        return laptopRepository.findAll().stream()
+                .map(this::mapLaptopToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Laptop fetchLaptop(Long laptopId) {
-        return laptopRepository.findById(laptopId).get();
+    public LaptopDTO getLaptopById(Long id) {
+        Laptop laptop = laptopRepository.findById(id).orElseThrow(() -> new RuntimeException("Laptop not found"));
+        return mapLaptopToDTO(laptop);
     }
 
     @Override
-    public Laptop updateLaptop(Laptop laptop, Long laptopId) {
-        Laptop dbLaptop = laptopRepository.findById(laptopId).get();
-        //List to update
-        dbLaptop.setLaptopOperatingSystem(laptop.getLaptopOperatingSystem());
-
-        if (Objects.nonNull(laptop.getLaptopLabel()) && !"".equalsIgnoreCase(laptop.getLaptopLabel())) {
-            dbLaptop.setLaptopLabel(laptop.getLaptopLabel());
-        }
-        if (Objects.nonNull(laptop.getLaptopBrand()) && !"".equalsIgnoreCase(laptop.getLaptopBrand())) {
-            dbLaptop.setLaptopBrand(laptop.getLaptopBrand());
-        }
-        if (Objects.nonNull(laptop.getLaptopSerialNumber()) && !"".equalsIgnoreCase(String.valueOf(laptop.getLaptopSerialNumber()))) {
-            dbLaptop.setLaptopSerialNumber(laptop.getLaptopSerialNumber());
-        }
-        if (Objects.nonNull(laptop.getLaptopOwner()) && !"".equalsIgnoreCase(laptop.getLaptopOwner())) {
-            dbLaptop.setLaptopOwner(laptop.getLaptopOwner());
-        }
-        if (Objects.nonNull(laptop.getLaptopLocation()) && !"".equalsIgnoreCase(String.valueOf(laptop.getLaptopLocation()))) {
-            dbLaptop.setLaptopLocation(laptop.getLaptopLocation());
-        }
-        if (Objects.nonNull(laptop.getLaptopPrimaryUse()) && !"".equalsIgnoreCase(String.valueOf(laptop.getLaptopPrimaryUse()))) {
-            dbLaptop.setLaptopPrimaryUse(laptop.getLaptopPrimaryUse());
-        }
-        if (Objects.nonNull(laptop.getLaptopOperatingSystem()) && !"".equalsIgnoreCase(String.valueOf(laptop.getLaptopOperatingSystem()))) {
-            dbLaptop.setLaptopOperatingSystem(laptop.getLaptopOperatingSystem());
-        }
-
-        return laptopRepository.save(dbLaptop);
+    public LaptopDTO createLaptop(LaptopDTO laptopDTO) {
+        Laptop laptop = mapDTOToLaptop(laptopDTO);
+        Laptop savedLaptop = laptopRepository.save(laptop);
+        return mapLaptopToDTO(savedLaptop);
     }
 
     @Override
-    public void deleteLaptopById(Long laptopId) {
-        laptopRepository.deleteById(laptopId);
+    public LaptopDTO updateLaptop(Long id, LaptopDTO laptopDTO) {
+        Laptop existingLaptop = laptopRepository.findById(id).orElseThrow(() -> new RuntimeException("Laptop not found"));
+        existingLaptop.setLaptopLabel(laptopDTO.getLaptopLabel());
+        existingLaptop.setLaptopBrand(laptopDTO.getLaptopBrand());
+        existingLaptop.setLaptopSerialNumber(laptopDTO.getLaptopSerialNumber());
+        existingLaptop.setLaptopOwner(laptopDTO.getLaptopOwner());
+        existingLaptop.setLaptopLocation(laptopDTO.getLaptopLocation());
+        existingLaptop.setLaptopPrimaryUse(laptopDTO.getLaptopPrimaryUse());
+        existingLaptop.setLaptopOperatingSystem(laptopDTO.getLaptopOperatingSystem());
+        Laptop updatedLaptop = laptopRepository.save(existingLaptop);
+        return mapLaptopToDTO(updatedLaptop);
+    }
+
+    @Override
+    public void deleteLaptop(Long id) {
+        Laptop laptop = laptopRepository.findById(id).orElseThrow(() -> new RuntimeException("Laptop not found"));
+        laptopRepository.delete(laptop);
     }
 }

@@ -1,18 +1,18 @@
 package ca.tanasije.electronics_list.service;
 
-import ca.tanasije.electronics_list.entity.Laptop;
+import ca.tanasije.electronics_list.dto.LaptopDTO;
 
 import java.util.List;
 
 public interface LaptopService {
 
-    Laptop saveLaptop(Laptop laptop);
+    List<LaptopDTO> getAllLaptops();
 
-    List<Laptop> fetchLaptopList();
+    LaptopDTO getLaptopById(Long laptopId);
 
-    Laptop fetchLaptop(Long laptopId);
+    LaptopDTO createLaptop(LaptopDTO laptopDTO);
 
-    Laptop updateLaptop(Laptop laptop, Long laptopId);
+    LaptopDTO updateLaptop(Long id, LaptopDTO laptopDTO);
 
-    void deleteLaptopById(Long laptopId);
+    void deleteLaptop(Long laptopId);
 }
