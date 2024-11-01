@@ -2,6 +2,7 @@ package ca.tanasije.electronics_list.service;
 
 import ca.tanasije.electronics_list.dto.LaptopDTO;
 import ca.tanasije.electronics_list.entity.Laptop;
+import ca.tanasije.electronics_list.exception.LaptopAlreadyExistsException;
 import ca.tanasije.electronics_list.exception.NoSuchLaptopExistsException;
 import ca.tanasije.electronics_list.repository.LaptopRepository;
 import ca.tanasije.electronics_list.utility.error_message.ErrorMessage;
@@ -55,6 +56,9 @@ public class LaptopServiceImpl implements LaptopService{
 
     @Override
     public LaptopDTO createLaptop(LaptopDTO laptopDTO) {
+        if(laptopRepository.findById(laptopDTO.getLaptopId()).isPresent()) {
+            throw new LaptopAlreadyExistsException(ErrorMessage.ERROR_LAPTOP_ALREADY_FOUND + laptopDTO.getLaptopId());
+        }
         Laptop laptop = mapDTOToLaptop(laptopDTO);
         Laptop savedLaptop = laptopRepository.save(laptop);
         return mapLaptopToDTO(savedLaptop);
@@ -62,7 +66,7 @@ public class LaptopServiceImpl implements LaptopService{
 
     @Override
     public LaptopDTO updateLaptop(Long id, LaptopDTO laptopDTO) {
-        Laptop existingLaptop = laptopRepository.findById(id).orElseThrow(() -> new RuntimeException("Laptop not found"));
+        Laptop existingLaptop = laptopRepository.findById(id).orElseThrow(() -> new NoSuchLaptopExistsException(ErrorMessage.ERROR_LAPTOP_NOT_FOUND + id));
         existingLaptop.setLaptopLabel(laptopDTO.getLaptopLabel());
         existingLaptop.setLaptopBrand(laptopDTO.getLaptopBrand());
         existingLaptop.setLaptopSerialNumber(laptopDTO.getLaptopSerialNumber());
@@ -76,7 +80,7 @@ public class LaptopServiceImpl implements LaptopService{
 
     @Override
     public void deleteLaptop(Long id) {
-        Laptop laptop = laptopRepository.findById(id).orElseThrow(() -> new RuntimeException("Laptop not found"));
+        Laptop laptop = laptopRepository.findById(id).orElseThrow(() -> new NoSuchLaptopExistsException(ErrorMessage.ERROR_LAPTOP_NOT_FOUND + id));
         laptopRepository.delete(laptop);
     }
 }
