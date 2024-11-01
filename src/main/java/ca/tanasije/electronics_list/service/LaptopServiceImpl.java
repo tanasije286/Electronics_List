@@ -19,7 +19,7 @@ public class LaptopServiceImpl implements LaptopService{
     private LaptopRepository laptopRepository;
 
     private LaptopDTO mapLaptopToDTO(Laptop laptop) {
-        return new LaptopDTO(laptop.getLaptopId(),
+        return new LaptopDTO(laptop.getId(),
                 laptop.getLaptopLabel(),
                 laptop.getLaptopBrand(),
                 laptop.getLaptopSerialNumber(),

@@ -19,7 +19,7 @@ public class Laptop {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long laptopId;
+    private Long Id;
 
     @Column(name = "Label", nullable = false)
     @NotBlank(message = "Label cannot be blank")
