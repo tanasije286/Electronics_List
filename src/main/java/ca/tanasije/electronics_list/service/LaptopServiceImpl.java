@@ -56,7 +56,7 @@ public class LaptopServiceImpl implements LaptopService{
 
     @Override
     public LaptopDTO createLaptop(LaptopDTO laptopDTO) {
-        if(laptopRepository.findById(laptopDTO.getLaptopId()).isPresent()) {
+        if(laptopDTO.getLaptopId()!=null && laptopRepository.findById(laptopDTO.getLaptopId()).isPresent()) {
             throw new LaptopAlreadyExistsException(ErrorMessage.ERROR_LAPTOP_ALREADY_FOUND + laptopDTO.getLaptopId());
         }
         Laptop laptop = mapDTOToLaptop(laptopDTO);
